@@ -337,6 +337,13 @@ public class Canvas {
 
                     //VD paths
                     gP.displayContainers(vertexList);
+
+                    System.out.println("Degree Centrality");
+                    int[] degreeCentrality = gP.degreeCentrality(vertexList, edgeList);
+                    for (int v : degreeCentrality){
+                        System.out.print(v + " ");
+                    }
+                    System.out.println("");
                 //gP.drawNWideDiameter();
                 }
                 erase();
