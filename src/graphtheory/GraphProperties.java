@@ -24,8 +24,6 @@ public class GraphProperties {
     public Vector<VertexPair> vpList;
     private Vector<Vertex> vertexList;
     private Vector<Edge> edgeList;
-
-<<<<<<< HEAD
     public int[] degreeCentrality(Vector<Vertex> vList, Vector<Edge> eList){
         Vector<Integer> degreeCentralityIndex = new Vector<Integer>();
         int[] adjacentCount = new int[vList.size()];
@@ -74,20 +72,10 @@ public class GraphProperties {
     //get centrality of one node
     public float[] betweennessCentrality(Vertex v,int [][] distanceMatrix) {
     	float[] result = new float[distanceMatrix.length];
-    	
+    	for(int i=0;i<distanceMatrix.length;i++) {
+    		
+    	}
     	return result;
-=======
-    public Vector<Vertex> getVertexList(){
-    	return vertexList;
-    }
-
-    public Vector<Edge> getEdgeList(){
-    	return edgeList;	
->>>>>>> 1cbe595b9caa1aff1da2b072dded51a3addb8786
-    }
-
-    public int [][] getAdjacencyMatrix(){
-    	return adjacencyMatrix;
     }
 
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
