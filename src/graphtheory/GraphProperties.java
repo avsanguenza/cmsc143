@@ -21,6 +21,36 @@ public class GraphProperties {
     public int[][] distanceMatrix;
     public int[] degreeCentrality;
     public Vector<VertexPair> vpList;
+    private Vector<Vertex> vertexList;
+    private Vector<Edge> edgeList;
+    
+  //closeness centrality 
+    //Average shortest path between a node and all other nodes
+
+    public float[] closenessCentrality(int[][]distanceMatrix) {
+    	float[]result = new float[distanceMatrix.length];
+    		for(int i=0;i<distanceMatrix.length;i++) {
+    			float temp=0;
+    			for(int j=0;j<distanceMatrix.length;j++) {
+    				temp+=distanceMatrix[i][j];
+    			}
+    			result[i] = 1/(temp/(distanceMatrix.length-1));
+    		}
+    	return result;
+    }
+
+
+    public Vector<Vertex> getVertexList(){
+    	return vertexList;
+    }
+
+    public Vector<Edge> getEdgeList(){
+    	return edgeList;	
+    }
+
+    public int [][] getAdjacencyMatrix(){
+    	return adjacencyMatrix;
+    }
 
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
         adjacencyMatrix = new int[vList.size()][vList.size()];
@@ -58,6 +88,7 @@ public class GraphProperties {
 		return degreeCentrality;
     	
     }
+    
     public int[][] generateDistanceMatrix(Vector<Vertex> vList) {
         distanceMatrix = new int[vList.size()][vList.size()];
 
@@ -156,7 +187,7 @@ public class GraphProperties {
             }
         }
     }
-
+    
     public void drawDistanceMatrix(Graphics g, Vector<Vertex> vList, int x, int y) {
         int cSize = 20;
         g.setColor(Color.LIGHT_GRAY);
