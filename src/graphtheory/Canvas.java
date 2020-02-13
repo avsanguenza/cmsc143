@@ -35,7 +35,6 @@ public class Canvas {
     private Vector<Vertex> vertexList;
     private Vector<Edge> edgeList;
     private GraphProperties gP = new GraphProperties();
-    /////////////
 
     public Canvas(String title, int width, int height, Color bgColour) {
         frame = new JFrame();
@@ -58,8 +57,9 @@ public class Canvas {
         JMenu menuOptions1 = new JMenu("File");
         JMenu menuOptions2 = new JMenu("Extras");
         JMenu menuOptions3 = new JMenu("Window");
-
+        
         JMenuItem item = new JMenuItem("Add Vertex");
+        
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
         item.addActionListener(new MenuListener());
         menuOptions.add(item);
@@ -97,7 +97,7 @@ public class Canvas {
         item = new JMenuItem("Properties");
         item.addActionListener(new MenuListener());
         menuOptions3.add(item);
-
+        
         menuBar.add(menuOptions1);
         menuBar.add(menuOptions);
         menuBar.add(menuOptions2);
@@ -344,6 +344,13 @@ public class Canvas {
                         System.out.print(v + " ");
                     }
                     System.out.println("");
+                   
+                    System.out.println("Closeness Centrality");
+                    float[] closenessCentrality = gP.closenessCentrality(gP.generateDistanceMatrix(vertexList));
+                    for(float v: closenessCentrality) {
+                    	String val = String.format("%.02f", v);
+                    	System.out.println(val);
+                    }
                 //gP.drawNWideDiameter();
                 }
                 erase();
