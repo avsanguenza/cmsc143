@@ -17,14 +17,15 @@ import java.util.Vector;
  */
 public class GraphProperties {
 
-    public int[][] adjacencyMatrix;
-    public int[][] distanceMatrix;
-    public int[] degreeCentrality;
+    private int[][] adjacencyMatrix;
+    private int[][] distanceMatrix;
+    private int[] degreeCentrality;
+    private float[] closenessCentrality;
     public Vector<VertexPair> vpList;
     private Vector<Vertex> vertexList;
     private Vector<Edge> edgeList;
-    // Degree Centrality
 
+<<<<<<< HEAD
     public int[] degreeCentrality(Vector<Vertex> vList, Vector<Edge> eList){
         Vector<Integer> degreeCentralityIndex = new Vector<Integer>();
         int[] adjacentCount = new int[vList.size()];
@@ -75,16 +76,21 @@ public class GraphProperties {
     	float[] result = new float[distanceMatrix.length];
     	
     	return result;
+=======
+    public Vector<Vertex> getVertexList(){
+    	return vertexList;
     }
-    
+
+    public Vector<Edge> getEdgeList(){
+    	return edgeList;	
+>>>>>>> 1cbe595b9caa1aff1da2b072dded51a3addb8786
+    }
+
     public int [][] getAdjacencyMatrix(){
     	return adjacencyMatrix;
     }
-    
+
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
-    	vertexList = vList;
-    	edgeList = eList;
-    	
         adjacencyMatrix = new int[vList.size()][vList.size()];
 
         for (int a = 0; a < vList.size(); a++)//initialize
@@ -95,13 +101,32 @@ public class GraphProperties {
         }
 
         for (int i = 0; i < eList.size(); i++) {
-            adjacencyMatrix[vList.indexOf(eList.get(i).vertex1)][vList.indexOf(eList.get(i).vertex2)] = 1;
-            adjacencyMatrix[vList.indexOf(eList.get(i).vertex2)][vList.indexOf(eList.get(i).vertex1)] = 1;
+            adjacencyMatrix[vList.indexOf(eList.get(i).vertex1)][vList.indexOf(eList.get(i).vertex2)] = eList.get(i).weight;
+            adjacencyMatrix[vList.indexOf(eList.get(i).vertex2)][vList.indexOf(eList.get(i).vertex1)] = eList.get(i).weight;
         }
 
         return adjacencyMatrix;
     }
 
+    public int[] generateDegreeCentrality(int[][] adjacencyMatrix)
+    {
+    	degreeCentrality = new int[adjacencyMatrix.length];
+    	for(int a = 0; a < adjacencyMatrix.length; a++)
+    	{
+    		int degreeCount = 0;
+    		for (int b = 0; b < adjacencyMatrix.length; b++)
+    		{
+    			if(adjacencyMatrix[a][b] == 1)
+    			{
+    				degreeCount++;
+    			}
+    		}
+    		degreeCentrality[a] = degreeCount;
+    	}
+		return degreeCentrality;
+    	
+    }
+    
     public int[][] generateDistanceMatrix(Vector<Vertex> vList) {
         distanceMatrix = new int[vList.size()][vList.size()];
 
@@ -125,14 +150,26 @@ public class GraphProperties {
         return distanceMatrix;
     }
 
+    
+    //closeness centrality: Average shortest path between a node and all other nodes
+    public float[] generateClosenessCentrality(int[][]distanceMatrix) {
+    	closenessCentrality = new float[distanceMatrix.length];
+    		for(int i=0;i<distanceMatrix.length;i++) {
+    			float temp=0;
+    			for(int j=0;j<distanceMatrix.length;j++) {
+    				temp+=distanceMatrix[i][j];
+    			}
+    			closenessCentrality[i] = 1/(temp/(distanceMatrix.length-1));
+    		}
+    	return closenessCentrality;
+    }
+    
     public void displayContainers(Vector<Vertex> vList) {
         vpList = new Vector<VertexPair>();
         int[] kWideGraph = new int[10];
         for (int i = 0; i < kWideGraph.length; i++) {
             kWideGraph[i] = -1;
         }
-
-
 
         VertexPair vp;
 
@@ -183,24 +220,40 @@ public class GraphProperties {
 
 
     }
-
+    
     public void drawAdjacencyMatrix(Graphics g, Vector<Vertex> vList, int x, int y) {
         int cSize = 20;
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(x, y-30, vList.size() * cSize+cSize, vList.size() * cSize+cSize);
         g.setColor(Color.black);
         g.drawString("AdjacencyMatrix", x, y - cSize);
-        for (int i = 0; i < vList.size(); i++) {
+        for (int i = 0; i < vList.size(); i++) 
+        {
             g.setColor(Color.RED);
             g.drawString(vList.get(i).name, x + cSize + i * cSize, y);
             g.drawString(vList.get(i).name, x, cSize + i * cSize + y);
             g.setColor(Color.black);
-            for (int j = 0; j < vList.size(); j++) {
+            for (int j = 0; j < vList.size(); j++)
+            {
                 g.drawString("" + adjacencyMatrix[i][j], x + cSize * (j + 1), y + cSize * (i + 1));
             }
         }
     }
 
+    public void drawDegreeCentrality(Graphics g, int[] degreeCentrality, int x, int y) {
+        int cSize = 20;
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y-30, degreeCentrality.length * cSize+cSize, degreeCentrality.length * cSize+cSize);
+        g.setColor(Color.black);
+        g.drawString("DegreeCentrality", x, y - cSize);
+        for (int i = 0; i < degreeCentrality.length; i++) {
+            g.setColor(Color.RED);
+            g.drawString(Integer.toString(i), x + cSize + i * cSize, y);
+            g.setColor(Color.black);
+            g.drawString("" + degreeCentrality[i], x + cSize * (i + 1), y + cSize );
+        }
+    }
+    
     public void drawDistanceMatrix(Graphics g, Vector<Vertex> vList, int x, int y) {
         int cSize = 20;
         g.setColor(Color.LIGHT_GRAY);
@@ -215,6 +268,20 @@ public class GraphProperties {
             for (int j = 0; j < vList.size(); j++) {
                 g.drawString("" + distanceMatrix[i][j], x + cSize * (j + 1), y + cSize * (i + 1));
             }
+        }
+    }
+    
+    public void drawClosenessCentrality(Graphics g, float[] closenessCentrality, int x, int y) {
+        int cSize = 20;
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y-30, closenessCentrality.length * cSize+cSize, closenessCentrality.length * cSize+cSize);
+        g.setColor(Color.black);
+        g.drawString("ClosenessCentrality", x, y - cSize);
+        for (int i = 0; i < closenessCentrality.length; i++) {
+            g.setColor(Color.RED);
+            g.drawString(Integer.toString(i), x, i * cSize + y);
+            g.setColor(Color.black);
+            g.drawString("" + closenessCentrality[i], x + cSize, cSize * (i) + y);
         }
     }
 
