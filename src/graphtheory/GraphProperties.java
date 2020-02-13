@@ -70,13 +70,11 @@ public class GraphProperties {
     	return result;
     }
     
-    
-    public Vector<Vertex> getVertexList(){
-    	return vertexList;
-    }
-    
-    public Vector<Edge> getEdgeList(){
-    	return edgeList;	
+    //get centrality of one node
+    public float[] betweennessCentrality(Vertex v,int [][] distanceMatrix) {
+    	float[] result = new float[distanceMatrix.length];
+    	
+    	return result;
     }
     
     public int [][] getAdjacencyMatrix(){
