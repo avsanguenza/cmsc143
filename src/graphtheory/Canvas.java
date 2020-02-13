@@ -34,6 +34,8 @@ public class Canvas {
     /////////////
     private Vector<Vertex> vertexList;
     private Vector<Edge> edgeList;
+    private int[] degreeCentrality;
+    private float[] closenessCentrality;
     private GraphProperties gP = new GraphProperties();
     /////////////
 
@@ -41,7 +43,7 @@ public class Canvas {
         frame = new JFrame();
         frame.setTitle(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         canvas = new CanvasPane();
         InputListener inputListener = new InputListener();
         canvas.addMouseListener(inputListener);
@@ -213,7 +215,7 @@ public class Canvas {
                         Vertex parentV = vertexList.get(clickedVertexIndex);
                         for (Vertex v : vertexList) {
                             if (v.hasIntersection(e.getX(), e.getY()) && v != parentV && !v.connectedToVertex(parentV)) {              //System.out.println(clickedVertexIndex+" "+vertexList.indexOf(v));
-                                Edge edge = new Edge(v, parentV);
+                                Edge edge = new Edge(v, parentV, 1);
                                 v.addVertex(parentV);
                                 parentV.addVertex(v);
                                 v.wasClicked = false;
@@ -339,11 +341,18 @@ public class Canvas {
                     gP.displayContainers(vertexList);
 
                     System.out.println("Degree Centrality");
-                    int[] degreeCentrality = gP.generateDegreeCentrality(matrix);
+                    degreeCentrality = gP.generateDegreeCentrality(matrix);
                     for (int v : degreeCentrality){
                         System.out.print(v + " ");
                     }
                     System.out.println("");
+                    
+                    System.out.println("Closeness Centrality");
+                    closenessCentrality = gP.generateClosenessCentrality(gP.generateDistanceMatrix(vertexList));
+                    for(float v: closenessCentrality) {
+                    	String val = String.format("%.02f", v);
+                    	System.out.println(val);
+                    }
                 //gP.drawNWideDiameter();
                 }
                 erase();
@@ -456,7 +465,10 @@ public class Canvas {
                 case 1: {   //properties window
                     canvasImage2.getGraphics().clearRect(0, 0, width, height); //clear
                     gP.drawAdjacencyMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, 50);//draw adjacency matrix
-                    gP.drawDistanceMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, height / 2 + 50);//draw distance matrix
+                    gP.drawDegreeCentrality(canvasImage2.getGraphics(), degreeCentrality, width /2 + 50, height / 4 + 50);
+                    gP.drawDistanceMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, height/2 + 50);//draw distance matrix
+                    gP.drawClosenessCentrality(canvasImage2.getGraphics(), closenessCentrality, width / 2 + 50, height*3 / 4 + 50);//draw distance matrix
+                    
                     g.drawImage(canvasImage2, 0, 0, null); //layer 1
                     drawString("Graph disconnects when nodes in color red are removed.", 100, height - 30, 20);
                     g.drawString("See output console for Diameter of Graph", 100, height / 2 + 50);

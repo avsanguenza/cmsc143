@@ -15,12 +15,14 @@ public class Edge {
 
     public Vertex vertex1;
     public Vertex vertex2;
+    public int weight;
     public boolean wasFocused;
     public boolean wasClicked;
 
-    public Edge(Vertex v1, Vertex v2) {
+    public Edge(Vertex v1, Vertex v2, int w) {
         vertex1 = v1;
         vertex2 = v2;
+        weight = w;
     }
 
     public void draw(Graphics g) {

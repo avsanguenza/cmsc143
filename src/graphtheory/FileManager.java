@@ -87,7 +87,7 @@ public class FileManager {
 
                     for (int l = j + 1; l < vertexList.size(); l++) { //edges
                         if (adjacencyLine.charAt(l) == '1') {
-                            Edge e = new Edge(vertexList.get(j), vertexList.get(l));
+                            Edge e = new Edge(vertexList.get(j), vertexList.get(l), 1);
                             edgeList.add(e);
                         }
                     }
