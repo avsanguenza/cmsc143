@@ -22,37 +22,6 @@ public class GraphProperties {
     public int[] degreeCentrality;
     public Vector<VertexPair> vpList;
 
-    // Degree Centrality
-
-    public int[] degreeCentrality(Vector<Vertex> vList, Vector<Edge> eList){
-        Vector<Integer> degreeCentralityIndex = new Vector<Integer>();
-        int[] adjacentCount = new int[vList.size()];
-        for (int i = 0; i < adjacentCount.length; i++){
-            adjacentCount[i] = 0;
-        }
-        for (int i = 0; i < eList.size(); i++){
-            adjacentCount[vList.indexOf(eList.get(i).vertex1)]++;
-            adjacentCount[vList.indexOf(eList.get(i).vertex2)]++;
-        }
-
-
-        int max = adjacentCount[0];
-        degreeCentralityIndex.add(0);
-        for (int i = 1; i < adjacentCount.length; i++){
-            if (max < adjacentCount[i]){
-                degreeCentralityIndex = new Vector<Integer>();
-                degreeCentralityIndex.add(i);
-            } else if (max == adjacentCount[i]) {
-                degreeCentralityIndex.add(i);
-            }
-        }
-        int[] result = new int[degreeCentralityIndex.size()];
-        for (int i = 0; i < degreeCentralityIndex.size(); i++){
-            result[i] = degreeCentralityIndex.get(i);
-        }
-
-        return result;
-    }
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
         adjacencyMatrix = new int[vList.size()][vList.size()];
 
@@ -71,6 +40,24 @@ public class GraphProperties {
         return adjacencyMatrix;
     }
 
+    public int[] generateDegreeCentrality(int[][] adjacencyMatrix)
+    {
+    	degreeCentrality = new int[adjacencyMatrix.length];
+    	for(int a = 0; a < adjacencyMatrix.length; a++)
+    	{
+    		int degreeCount = 0;
+    		for (int b = 0; b < adjacencyMatrix.length; b++)
+    		{
+    			if(adjacencyMatrix[a][b] == 1)
+    			{
+    				degreeCount++;
+    			}
+    		}
+    		degreeCentrality[a] = degreeCount;
+    	}
+		return degreeCentrality;
+    	
+    }
     public int[][] generateDistanceMatrix(Vector<Vertex> vList) {
         distanceMatrix = new int[vList.size()][vList.size()];
 

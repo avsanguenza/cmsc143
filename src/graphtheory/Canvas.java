@@ -339,7 +339,7 @@ public class Canvas {
                     gP.displayContainers(vertexList);
 
                     System.out.println("Degree Centrality");
-                    int[] degreeCentrality = gP.degreeCentrality(vertexList, edgeList);
+                    int[] degreeCentrality = gP.generateDegreeCentrality(matrix);
                     for (int v : degreeCentrality){
                         System.out.print(v + " ");
                     }
