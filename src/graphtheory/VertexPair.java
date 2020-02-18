@@ -7,6 +7,7 @@ package graphtheory;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -20,15 +21,15 @@ public class VertexPair {
     public Vector<Vector<Vertex>> pathList;     //all paths
     public Vector<Vector<Vector<Vertex>>> VertexDisjointContainer = new Vector<Vector<Vector<Vertex>>>(); // container of vertex-disjoint sets
     
-    public ArrayList<Vertex>bfsPathList = new ArrayList<Vertex>();
+    Hashtable<Vertex,Vector<Vertex>> path = new Hashtable<Vertex,Vector<Vertex>>();
     
     public VertexPair(Vertex v1, Vertex v2) {
         vertex1 = v1;
         vertex2 = v2;
     }
 
-    public ArrayList<Vertex> getPath(){
-    	return bfsPathList;
+    public Hashtable<Vertex,Vector<Vertex>> getPaths(){
+    	return path;
     }
     
     public int getShortestDistance() {
@@ -36,7 +37,7 @@ public class VertexPair {
     	
         Vector<Vertex> visitedNodes = new Vector<Vertex>();
         visitedNodes.add(vertex1);      //root node = vertex1
-        bfsPathList.add(vertex1); //initial
+        
         int counter = 0;
         while (!visitedNodes.contains(vertex2)) {
 
@@ -45,10 +46,11 @@ public class VertexPair {
                 for (Vertex x : visitedNodes.get(i).connectedVertices) {
                     if (!visitedNodes.contains(x)) {
                         visitedNodes.add(x);
-                        bfsPathList.add(x);
+                        
                     }
                 }
             }
+            path.put(vertex1,visitedNodes);
             counter++;
             if (workingSize == visitedNodes.size()) // if list not growing, pair is disconnected
             {
@@ -86,6 +88,7 @@ public class VertexPair {
         }
         
     }
+    
     public boolean isAlreadyContained(Vector<Vector<Vertex>> c){
 
         for(Vector<Vector<Vertex>> d:VertexDisjointContainer){

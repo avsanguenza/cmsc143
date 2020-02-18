@@ -6,9 +6,12 @@ package graphtheory;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.Vector;
 
 /**
@@ -70,10 +73,30 @@ public class GraphProperties {
     }
     
     //get centrality of one node
-    public float[] betweennessCentrality(Vertex v,int [][] distanceMatrix) {
+    //from j to k, what is the centrality of node i (is node i involved in the shortest paths)
+    public float[] betweennessCentrality(Vector<Vertex>vList, Vector<Edge>eList, Vector v) {
+        distanceMatrix = generateAdjacencyMatrix(vList, eList);
+        VertexPair vp;
     	float[] result = new float[distanceMatrix.length];
-    	for(int i=0;i<distanceMatrix.length;i++) {
-    		
+    	Hashtable<Integer,Float> bCentrality = new Hashtable<Integer,Float>();
+    	for(int i=0; i<vList.size();i++) {
+    		int count=0;
+    		for(int j=i+1;j<vList.size();j++) {
+    			vp = new VertexPair(vList.get(i),vList.get(j));
+    			int shortestDistance = vp.getShortestDistance();
+    			if(shortestDistance > 0) {
+    				Hashtable<Vertex,Vector<Vertex>>path = vp.getPaths();
+    				ArrayList<Vertex> vertexKeys = new ArrayList<Vertex>(path.keySet());
+    				for(int k = 1; k<=vertexKeys.size()-1;k++) {
+    					Vector<Vertex> temp = path.get(vertexKeys.get(k));
+    					if(temp.contains(v)) {
+    						count++;
+    					}
+    				}
+    				float ans = count/shortestDistance;
+    				bCentrality.put(vList.indexOf(vList.get(i)),ans);
+    			}
+    		}
     	}
     	return result;
     }
@@ -116,15 +139,15 @@ public class GraphProperties {
     }
     
     public int[][] generateDistanceMatrix(Vector<Vertex> vList) {
-        distanceMatrix = new int[vList.size()][vList.size()];
+      /*  distanceMatrix = new int[vList.size()][vList.size()];
 
         for (int a = 0; a < vList.size(); a++)//initialize
         {
             for (int b = 0; b < vList.size(); b++) {
                 distanceMatrix[a][b] = 0;
             }
-        }
-
+        }*/
+        distanceMatrix = initializeDistanceMatrix(vList.size());
         VertexPair vp;
         int shortestDistance;
         for (int i = 0; i < vList.size(); i++) {
@@ -314,6 +337,18 @@ public class GraphProperties {
         return toBeRemoved;
     }
 
+    public int[][]initializeDistanceMatrix(int v){
+    	  distanceMatrix = new int[v][v];
+
+          for (int a = 0; a < v; a++)//initialize
+          {
+              for (int b = 0; b < v; b++) {
+                  distanceMatrix[a][b] = 0;
+              }
+          }
+          return distanceMatrix;
+    }
+    
     private boolean graphConnectivity(Vector<Vertex> vList) {
 
         Vector<Vertex> visitedList = new Vector<Vertex>();
