@@ -20,7 +20,7 @@ public class VertexPair {
     public Vertex vertex2;
     public Vector<Vector<Vertex>> pathList;     //all paths
     public Vector<Vector<Vector<Vertex>>> VertexDisjointContainer = new Vector<Vector<Vector<Vertex>>>(); // container of vertex-disjoint sets
-    
+    public Vector<Vertex> visitedNodes = new Vector<Vertex>();
     Hashtable<Vertex,Vector<Vertex>> path = new Hashtable<Vertex,Vector<Vertex>>();
     
     public VertexPair(Vertex v1, Vertex v2) {
@@ -28,19 +28,17 @@ public class VertexPair {
         vertex2 = v2;
     }
 
-    public Hashtable<Vertex,Vector<Vertex>> getPaths(){
-    	return path;
+    public  Vector<Vertex>getPaths(){
+    	return visitedNodes;
     }
     
     public int getShortestDistance() {
         //simple BFS
     	
-        Vector<Vertex> visitedNodes = new Vector<Vertex>();
         visitedNodes.add(vertex1);      //root node = vertex1
         
         int counter = 0;
         while (!visitedNodes.contains(vertex2)) {
-
             int workingSize = visitedNodes.size();
             for (int i = counter; i < workingSize; i++) {
                 for (Vertex x : visitedNodes.get(i).connectedVertices) {

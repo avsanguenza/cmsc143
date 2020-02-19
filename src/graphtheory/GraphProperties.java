@@ -74,31 +74,32 @@ public class GraphProperties {
     
     //get centrality of one node
     //from j to k, what is the centrality of node i (is node i involved in the shortest paths)
-    public float[] betweennessCentrality(Vector<Vertex>vList, Vector<Edge>eList, Vector v) {
-        distanceMatrix = generateAdjacencyMatrix(vList, eList);
-        VertexPair vp;
-    	float[] result = new float[distanceMatrix.length];
-    	Hashtable<Integer,Float> bCentrality = new Hashtable<Integer,Float>();
-    	for(int i=0; i<vList.size();i++) {
-    		int count=0;
-    		for(int j=i+1;j<vList.size();j++) {
-    			vp = new VertexPair(vList.get(i),vList.get(j));
-    			int shortestDistance = vp.getShortestDistance();
-    			if(shortestDistance > 0) {
-    				Hashtable<Vertex,Vector<Vertex>>path = vp.getPaths();
-    				ArrayList<Vertex> vertexKeys = new ArrayList<Vertex>(path.keySet());
-    				for(int k = 1; k<=vertexKeys.size()-1;k++) {
-    					Vector<Vertex> temp = path.get(vertexKeys.get(k));
-    					if(temp.contains(v)) {
-    						count++;
-    					}
-    				}
-    				float ans = count/shortestDistance;
-    				bCentrality.put(vList.indexOf(vList.get(i)),ans);
-    			}
-    		}
+    public float getBetweennessCentrality(Vector<Vertex>vList,Vertex v) {
+    	float ans=0;
+    	for(int i=vList.size()-1;i>=1;i--) {
+    		ans +=betweennessCentrality(vList.get(0),vList.get(i),v);
     	}
-    	return result;
+    	return ans;
+    }
+    private float betweennessCentrality(Vertex j,Vertex k, Vertex i) {
+        VertexPair vp;
+		int count=0;
+		float ans = 0;
+    	vp = new VertexPair(j,k);
+		int numShortPath = vp.getShortestDistance();
+    	if(numShortPath> 0) {
+    		Vector<Vertex>path = vp.getPaths();
+			ArrayList<Vertex>vPath = new ArrayList<>(path.subList(1, path.size()-1));
+			for(int a =0; a<vPath.size();a++) {
+				if(vPath.contains(i)) {
+					count++;
+				}
+			}
+				
+		//	ans = count/numShortPath;
+    	}
+    	ans = (float)count/(float)numShortPath;
+    	return ans;
     }
 
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {

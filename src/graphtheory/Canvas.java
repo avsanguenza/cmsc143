@@ -6,6 +6,7 @@ package graphtheory;
  */
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -352,6 +353,13 @@ public class Canvas {
                     for(float v: closenessCentrality) {
                     	String val = String.format("%.02f", v);
                     	System.out.println(val);
+                    }
+                    
+                    System.out.println("Betweenness Centrality");
+                    for(Vertex ve: vertexList) {
+                    	float ans = gP.getBetweennessCentrality(vertexList,ve);
+                    	String val = String.format("%.02f", ans);
+                    	System.out.println(vertexList.indexOf(ve)+" "+val);
                     }
                 //gP.drawNWideDiameter();
                 }
