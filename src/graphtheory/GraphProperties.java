@@ -95,13 +95,10 @@ public class GraphProperties {
 					count++;
 				}
 			}
-				
-		//	ans = count/numShortPath;
     	}
     	ans = (float)count/(float)numShortPath;
     	return ans;
     }
-
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
         adjacencyMatrix = new int[vList.size()][vList.size()];
 

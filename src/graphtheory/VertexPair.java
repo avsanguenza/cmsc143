@@ -59,7 +59,6 @@ public class VertexPair {
         return counter;
 
     }
-
     public void generateVertexDisjointPaths() {
         VertexDisjointContainer.removeAllElements();
         generatePaths();
