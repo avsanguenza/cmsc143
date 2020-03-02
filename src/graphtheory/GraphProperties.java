@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphtheory;
+package GraphColoring;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -291,6 +291,20 @@ public class GraphProperties {
             g.drawString(Integer.toString(i), x, i * cSize + y);
             g.setColor(Color.black);
             g.drawString("" + closenessCentrality[i], x + cSize, cSize * (i) + y);
+        }
+    }
+
+    public void drawBetweennessCentrality(Graphics g, Vector<Vertex> vList, int x, int y){
+        int cSize = 20;
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x, y-30, closenessCentrality.length * cSize+cSize, closenessCentrality.length * cSize+cSize);
+        g.setColor(Color.black);
+        g.drawString("BetweennessCentrality", x, y - cSize);
+        for (int i = 0; i < vList.size(); i++){
+            g.setColor(Color.RED);
+            g.drawString(Integer.toString(i), x, i * cSize + y);
+            g.setColor(Color.black);
+            g.drawString("" + getBetweennessCentrality(vList, vList.get(i)), x + cSize, cSize * (i) + y);
         }
     }
 

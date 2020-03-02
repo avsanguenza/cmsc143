@@ -1,4 +1,4 @@
-package graphtheory;
+package GraphColoring;
 
 /**
  *
@@ -473,9 +473,10 @@ public class Canvas {
                 case 1: {   //properties window
                     canvasImage2.getGraphics().clearRect(0, 0, width, height); //clear
                     gP.drawAdjacencyMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, 50);//draw adjacency matrix
-                    gP.drawDegreeCentrality(canvasImage2.getGraphics(), degreeCentrality, width /2 + 50, height / 4 + 50);
-                    gP.drawDistanceMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, height/2 + 50);//draw distance matrix
-                    gP.drawClosenessCentrality(canvasImage2.getGraphics(), closenessCentrality, width / 2 + 50, height*3 / 4 + 50);//draw distance matrix
+                    gP.drawDegreeCentrality(canvasImage2.getGraphics(), degreeCentrality, width /2 + 50, height / 5 + 50);
+                    gP.drawDistanceMatrix(canvasImage2.getGraphics(), vertexList, width / 2 + 50, height * 2 / 5 + 50);//draw distance matrix
+                    gP.drawClosenessCentrality(canvasImage2.getGraphics(), closenessCentrality, width / 2 + 50, height*3 / 5 + 50);//draw distance matrix
+                    gP.drawBetweennessCentrality(canvasImage2.getGraphics(), vertexList, width / 2 + 50, height * 4 / 5 + 50); //draw betweenness centrality
                     
                     g.drawImage(canvasImage2, 0, 0, null); //layer 1
                     drawString("Graph disconnects when nodes in color red are removed.", 100, height - 30, 20);

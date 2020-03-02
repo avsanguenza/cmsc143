@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphtheory;
+package GraphColoring;
 
 import java.awt.Color;
 import java.awt.Point;
