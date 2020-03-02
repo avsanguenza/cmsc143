@@ -1,4 +1,4 @@
-package GraphColoring;
+package graphtheory;
 
 import javax.swing.UIManager;
 import java.awt.Color;

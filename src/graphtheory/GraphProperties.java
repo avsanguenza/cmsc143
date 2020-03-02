@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package GraphColoring;
+package graphtheory;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -76,29 +77,36 @@ public class GraphProperties {
     //from j to k, what is the centrality of node i (is node i involved in the shortest paths)
     public float getBetweennessCentrality(Vector<Vertex>vList,Vertex v) {
     	float ans=0;
-    	for(int i=vList.size()-1;i>=1;i--) {
-    		ans +=betweennessCentrality(vList.get(0),vList.get(i),v);
+    	for(int a=0;a<vList.indexOf(v);a++) {
+    		for(int b = vList.size()-1;b>=vList.indexOf(v);b--) {
+    			//System.out.println(vList.get(a).name+" -> "+vList.get(b).name);
+    			ans+=betweennessCentrality(vList.get(a),vList.get(b),v);
+    		}
     	}
+    	
     	return ans;
     }
+    
     private float betweennessCentrality(Vertex j,Vertex k, Vertex i) {
         VertexPair vp;
 		int count=0;
 		float ans = 0;
     	vp = new VertexPair(j,k);
-		int numShortPath = vp.getShortestDistance();
+		int numShortPath = vp.getShortestDistance(); //number of shortest paths from j to k 
     	if(numShortPath> 0) {
-    		Vector<Vertex>path = vp.getPaths();
-			ArrayList<Vertex>vPath = new ArrayList<>(path.subList(1, path.size()-1));
-			for(int a =0; a<vPath.size();a++) {
-				if(vPath.contains(i)) {
-					count++;
-				}
-			}
+    		Hashtable<Integer,Vector<Vertex>> paths = vp.getPaths();
+    		Set<Integer>pathKey = paths.keySet();
+    		for(Integer in: pathKey) {
+    			ArrayList<Vertex>vPath = new ArrayList<>(paths.get(in).subList(1, paths.get(in).size()-1));
+    				if(vPath.contains(i)) {
+    					count++;
+    				}
+    		}
     	}
     	ans = (float)count/(float)numShortPath;
     	return ans;
     }
+    
     public int[][] generateAdjacencyMatrix(Vector<Vertex> vList, Vector<Edge> eList) {
         adjacencyMatrix = new int[vList.size()][vList.size()];
 

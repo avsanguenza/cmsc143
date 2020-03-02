@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package GraphColoring;
+package graphtheory;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -21,15 +21,15 @@ public class VertexPair {
     public Vector<Vector<Vertex>> pathList;     //all paths
     public Vector<Vector<Vector<Vertex>>> VertexDisjointContainer = new Vector<Vector<Vector<Vertex>>>(); // container of vertex-disjoint sets
     public Vector<Vertex> visitedNodes = new Vector<Vertex>();
-    Hashtable<Vertex,Vector<Vertex>> path = new Hashtable<Vertex,Vector<Vertex>>();
+    Hashtable<Integer,Vector<Vertex>> path = new Hashtable<Integer,Vector<Vertex>>();
     
     public VertexPair(Vertex v1, Vertex v2) {
         vertex1 = v1;
         vertex2 = v2;
     }
 
-    public  Vector<Vertex>getPaths(){
-    	return visitedNodes;
+    public Hashtable<Integer, Vector<Vertex>>getPaths(){
+    	return path;
     }
     
     public int getShortestDistance() {
@@ -48,7 +48,7 @@ public class VertexPair {
                     }
                 }
             }
-            path.put(vertex1,visitedNodes);
+            path.put(counter,visitedNodes);
             counter++;
             if (workingSize == visitedNodes.size()) // if list not growing, pair is disconnected
             {
@@ -58,6 +58,23 @@ public class VertexPair {
 
         return counter;
 
+    }
+    
+    public Vector<Vertex> findBFS() {
+    	visitedNodes.add(vertex1);
+    	int counter=0;
+    	while(!visitedNodes.contains(vertex2)) {
+    		int size = visitedNodes.size();
+    		for(int i=counter; i<size;i++) {
+    			for(Vertex x: visitedNodes.get(i).connectedVertices) {
+    				if(!visitedNodes.contains(x)) {
+    					visitedNodes.add(x);
+    				}
+    			}
+    		}
+    		counter++;
+    	}
+    	return visitedNodes;
     }
     public void generateVertexDisjointPaths() {
         VertexDisjointContainer.removeAllElements();

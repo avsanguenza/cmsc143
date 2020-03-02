@@ -1,4 +1,4 @@
-package GraphColoring;
+package graphtheory;
 
 /**
  *
